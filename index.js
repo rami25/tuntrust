@@ -9,6 +9,7 @@ const session = require('express-session'); // Importez express-session
 const adminRoutes = require('./adminRoutes'); // Ajoutez les routes de l'administrateur
 const adminModel = require('./models/admin'); // Importez le modèle d'administrateur
 const commentRoutes = require('./commentRoutes');
+const dotenv = require('dotenv');
 
 const app = express();
 
@@ -25,15 +26,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyParser.json());
-
-// mongoose.connect('mongodb+srv://tuntrust:tuntrust1234567@cluster0.bektwm2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'),(err,done)=>{
-mongoose.connect('mongodb+srv://root:ramibenmrad105@cluster0.b3adovy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'),(err,done) => {    
+// const DATABASE_URL = process.env.DATABASE_URL;
+//'mongodb+srv://tuntrust:tuntrust1234567@cluster0.bektwm2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+const url = 'mongodb+srv://root:ramibenmrad105@cluster0.b3adovy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; 
+mongoose.connect(url),(err,done) => {    
 if (err){
     console.log(err)
 }
 if(done){
    console.log('base de donnée connecté avec succés! ')   
 }}
+//   .then(() => console.log('Connected to MongoDB'))
+//   .catch(err => console.error('Failed to connect to MongoDB', err));
 
  // Route pour soumettre une demande
  app.post("/demande", async (req, res) => {
@@ -119,9 +123,7 @@ const router = express.Router()
 })
 app.use('/',router)
 
-app.listen(3000,()=>{
+const PORT = process.env.PORT || 3000;
+app.listen(PORT,()=>{
     console.log("Serveur en marche");
 }) 
-
-
-
