@@ -1,21 +1,22 @@
 const express = require("express");
 const mongoose = require('mongoose');
+const session = require('express-session'); // Importez express-session
+const dotenv = require('dotenv');
+
 const User = require("./models/user");
 const bodyParser = require('body-parser');
-const authRoutes = require("./authRoutes"); // Importez le routeur pour les routes d'authentification
-const Certif = require('./certif');
-const logoutRoutes = require("./logoutRoutes");
-const session = require('express-session'); // Importez express-session
-const adminRoutes = require('./adminRoutes'); // Ajoutez les routes de l'administrateur
+const authRoutes = require("./routes/authRoutes"); // Importez le routeur pour les routes d'authentification
+const Certif = require('./models/certif');
+const logoutRoutes = require("./routes/logoutRoutes");
+const adminRoutes = require('./routes/adminRoutes'); // Ajoutez les routes de l'administrateur
 const adminModel = require('./models/admin'); // Importez le modèle d'administrateur
-const commentRoutes = require('./commentRoutes');
-const dotenv = require('dotenv');
+const commentRoutes = require('./routes/commentRoutes');
 
 const app = express();
 
-// Utilisez express-session pour la gestion des sessions
 app.use(session({
-    secret: 'votre_secret',
+    secret: 'secret',
+    cookie: {maxAge : 60000},
     resave: false,
     saveUninitialized: true
 }));
@@ -36,13 +37,11 @@ if (err){
 if(done){
    console.log('base de donnée connecté avec succés! ')   
 }}
-//   .then(() => console.log('Connected to MongoDB'))
-//   .catch(err => console.error('Failed to connect to MongoDB', err));
 
  // Route pour soumettre une demande
  app.post("/demande", async (req, res) => {
     try {
-      let new_certif = new Certif({
+      const new_certif = new Certif({
         certificat: req.body.certificat,
         nom: req.body.nom,
         prenom: req.body.prenom,

@@ -1,11 +1,10 @@
-// adminRoutes.js
 const express = require('express');
 const router = express.Router();
-const Certif = require('./certif');
-const User = require('./models/user');
+const Certif = require('../models/certif');
+const User = require('../models/user');
 
 // Middleware d'authentification de l'administrateur
-const adminAuthMiddleware = require('./adminAuthMiddleware');
+const adminAuthMiddleware = require('../middlewares/adminAuthMiddleware');
 
 // Récupérer la liste des utilisateurs
 router.get('/users', adminAuthMiddleware, async (req, res) => {

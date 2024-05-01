@@ -7,16 +7,16 @@ const certifSchema = new mongoose.Schema({
        },
     nom: {
     type: String,
-    required: true,
+    // required: true,
    }, 
    prenom: {
     type: String,
-    required: true,
+    // required: true,
    },
    email: {
     type: String,
     lowercase: true,
-    required: true,
+    // required: true,
     match: [
         /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
         "Format d'email incorrect"
@@ -25,7 +25,7 @@ const certifSchema = new mongoose.Schema({
    },
    cin: {
     type: String, // Le CIN est stocké comme une chaîne de caractères
-    required: true,
+    // required: true,
     validate: {
         validator: function(value) {
             // Vérification que le CIN est composé de 8 chiffres
@@ -36,15 +36,15 @@ const certifSchema = new mongoose.Schema({
    },
    gsm: {
     type: Number, // ou Number si vous souhaitez stocker le numéro de téléphone comme un nombre
-    required: true,
+    // required: true,
    },
    date: {
     type: String,
-    required: true,
+    // required: true,
    },
    duree: {
     type: String, // ou Number si vous souhaitez stocker la durée comme un nombre
-    required: true,
+    // required: true,
    }
 });
 
