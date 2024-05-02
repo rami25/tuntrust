@@ -1,31 +1,21 @@
+const asyncHandler = require('express-async-handler');
 const express = require('express');
 const router = express.Router();
-const Certif = require('../models/certif');
-const User = require('../models/user');
+const authMiddleware = require('../middlewares/authMiddleware');
+const adminHandler = require('../handlers/adminHandler');
 
-// Middleware d'authentification de l'administrateur
-const adminAuthMiddleware = require('../middlewares/adminAuthMiddleware');
+const listUsers    = adminHandler.listUsers;
+const listCertifs  = adminHandler.listCertifs;
+const listComments = adminHandler.listComments;
+const addUser      = adminHandler.addUser;
+const updateUser   = adminHandler.updateUser;
+const deleteUser   = adminHandler.deleteUser;
 
-// Récupérer la liste des utilisateurs
-router.get('/users', adminAuthMiddleware, async (req, res) => {
-  try {
-    const users = await User.find({});
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-
-// Récupérer la liste des demandes de certificats
-router.get('/certificates', adminAuthMiddleware, async (req, res) => {
-    try {
-      // Utilisez la connexion à la base de données des administrateurs
-      const certificates = await Certif.find({});
-      res.json(certificates);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
-  });
+router.get('/users',       authMiddleware, asyncHandler(listUsers));
+router.get('/certifs',     authMiddleware, asyncHandler(listCertifs));
+router.get('/comments',    authMiddleware, asyncHandler(listComments));
+router.get('/add_user',    authMiddleware, asyncHandler(addUser));
+router.get('/upd_user/:id',authMiddleware, asyncHandler(updateUser));
+router.get('/del_user/:id',authMiddleware, asyncHandler(deleteUser));
 
 module.exports = router;

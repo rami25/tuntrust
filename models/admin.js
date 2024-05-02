@@ -1,8 +1,7 @@
-// admin.js
 const mongoose = require('mongoose');
 
 const adminSchema = new mongoose.Schema({
-  username: {
+  login:{
     type: String,
     required: true,
     unique: true
@@ -11,6 +10,14 @@ const adminSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  certifs : [{
+    type : mongoose.Types.ObjectId,
+    ref : 'Certif'
+  }],
+  comments : [{
+    type : mongoose.Types.ObjectId,
+    ref : 'Comment'
+  }]
 });
 
 const Admin = mongoose.model('Admin', adminSchema);

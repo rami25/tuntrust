@@ -1,4 +1,3 @@
-// comment.js
 const mongoose = require('mongoose');
 
 const commentSchema = new mongoose.Schema({
@@ -6,7 +5,7 @@ const commentSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  commentaire: {
+  content: {
     type: String,
     required: true
   },
