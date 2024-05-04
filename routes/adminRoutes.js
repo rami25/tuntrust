@@ -14,8 +14,8 @@ const deleteUser   = adminHandler.deleteUser;
 router.get('/users',       authMiddleware, asyncHandler(listUsers));
 router.get('/certifs',     authMiddleware, asyncHandler(listCertifs));
 router.get('/comments',    authMiddleware, asyncHandler(listComments));
-router.get('/add_user',    authMiddleware, asyncHandler(addUser));
-router.get('/upd_user/:id',authMiddleware, asyncHandler(updateUser));
-router.get('/del_user/:id',authMiddleware, asyncHandler(deleteUser));
+router.post('/add_user',    authMiddleware, asyncHandler(addUser));
+router.patch('/upd_user/:id',authMiddleware, asyncHandler(updateUser));
+router.delete('/del_user/:id',authMiddleware, asyncHandler(deleteUser));
 
 module.exports = router;

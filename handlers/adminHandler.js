@@ -2,11 +2,12 @@ const User   = require('../models/user');
 const Certif = require('../models/certif');
 
 const listUsers = async(req, res) => {
+    console.log('done');
     try {
         const users = await User.find({});
-        res.json(users);
+        res.json({users});
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ msg: err.message });
     }
 }
 

@@ -1,6 +1,8 @@
 const express = require("express");
 const User = require("../models/user");
 const Admin = require("../models/admin");
+const { hashPassword } = require('../env');
+const { signJwt } = require('../auth');
 
 const router = express.Router();
 
@@ -21,10 +23,10 @@ router.post('/create', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-    const { login, password } = req.body;
 
-    if(!login || !password){
-        return res.status(400).send({error:'all fields are required'})
+    const { login, password } = req.body;
+    if (!login || !password) {
+        return res.status(400).send({ error: 'all fields are required' });
     }
 
     let existing = null;
@@ -34,11 +36,17 @@ router.post('/login', async (req, res) => {
     else
         existing = await User.findOne().where("login").equals(login);
 
-    if(!existing || existing.password != password)
+    // if (!existing || existing.password !== hashPassword(password)) {
+    if (!existing || existing.password !== password) {
         return res.status(403).send({error: 'unauthorized'})
+    }
 
-    req.session._id = existing._id;
-    res.status(200).json({ message: "Authentification réussie" , existing});
+    const jwt = signJwt({ userId: existing._id });
+    res.status(200).send({
+        existing,
+        jwt
+    });
+
 });
 
 module.exports = router;
