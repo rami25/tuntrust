@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/user");
 const Admin = require("../models/admin");
+const Comment = require("../models/comment");
 const { hashPassword } = require('../env');
 const { signJwt } = require('../auth');
 
@@ -8,13 +9,14 @@ const router = express.Router();
 
 //hedha just for testing
 router.post('/create', async (req, res) => {
-    const { login, password } = req.body;
+    const { nom, commentaire } = req.body;
     try{
-        const admin = new Admin({
-            login : login,
-            password : password
+        const com = new Comment({
+            nom,
+            commentaire,
+            date : Date.now()
         });
-        await admin.save();
+        await com.save();
         res.status(200).send('admin creer avec succès!');
     } catch (err) {
       console.log(err);

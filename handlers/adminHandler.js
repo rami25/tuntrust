@@ -1,5 +1,6 @@
 const User   = require('../models/user');
 const Certif = require('../models/certif');
+const Comment = require("../models/comment");
 
 const listUsers = async(req, res) => {
     try {
@@ -67,9 +68,7 @@ const listCertifs = async(req, res) => {
 
 const listComments = async(req, res) => {
   try {
-    const { ids } = req.query; 
-    const objectIdList = ids.split(',').map(id => mongoose.Types.ObjectId(id));
-    const comments = await Comment.find({ _id: { $in: objectIdList } });
+    const comments = await Comment.find({});
     res.json(comments);
   } catch (err) {
     console.error(err);
