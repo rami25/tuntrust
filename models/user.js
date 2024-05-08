@@ -7,13 +7,12 @@ const userSchema = mongoose.Schema({
     }, 
     email: {
         type: String,
-        required : true
-        // required: [true, "userName can't be empty"],
-        // match: [
-        //     /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
-        //     "userName format is not correct",
-        // ],
-        // unique: true,
+        required: [true, "userName can't be empty"],
+        match: [
+            /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
+            "userName format is not correct",
+        ],
+        unique: true,
     },
     password: {
         type: String,

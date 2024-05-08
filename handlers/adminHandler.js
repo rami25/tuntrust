@@ -2,7 +2,6 @@ const User   = require('../models/user');
 const Certif = require('../models/certif');
 
 const listUsers = async(req, res) => {
-    console.log('done');
     try {
         const users = await User.find({});
         res.json({users});
@@ -17,23 +16,24 @@ const addUser = async(req, res) => {
             nom: req.body.nom,
             email: req.body.email,
             password: req.body.password,
-            confirm_password: req.body.confirm_password
             });
             await new_user.save()
-            res.send('sauvegarde effectué avec succée!')
+            res.send({ msg : 'sauvegarde effectué avec succée!'})
     }
     catch(err){
         console.log(err);
+        res.send({ msg : 'echec!!!'})
     }
 }
 
 const updateUser = async(req, res) => {
     try{
         await User.findOneAndUpdate({_id:req.params.id},
-            {
-            password: req.body.password
+        {
+            nom : req.body.nom,
+            email : req.body.email
         })
-        res.send("mise a jour avec succée!");
+        res.send({ msg : "mise a jour avec succée!"});
     }
     catch(err)
     {
@@ -47,22 +47,34 @@ const deleteUser = async(req, res) => {
         if (!user) {
             return res.status(404).send("Utilisateur non trouvé");
         }
-        res.send("Supprimé avec succès!");
+        res.send({msg : "Supprimé avec succès!"});
     } catch (err) {
         res.status(500).send(err.message);
     }
 }
 
 const listCertifs = async(req, res) => {
-    try {
-      const certificates = await Certif.find({});
-      res.json(certificates);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
+  try {
+    const { ids } = req.query;
+    const objectIdList = ids.split(',').map(id => mongoose.Types.ObjectId(id));
+    const certificates = await Certif.find({ _id: { $in: objectIdList } });
+    res.json(certificates);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
 }
 
 const listComments = async(req, res) => {
+  try {
+    const { ids } = req.query; 
+    const objectIdList = ids.split(',').map(id => mongoose.Types.ObjectId(id));
+    const comments = await Comment.find({ _id: { $in: objectIdList } });
+    res.json(comments);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }    
 }
 
 module.exports = { listUsers, listCertifs, listComments, addUser, updateUser, deleteUser };
