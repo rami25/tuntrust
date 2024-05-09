@@ -10,12 +10,14 @@ const listComments = adminHandler.listComments;
 const addUser      = adminHandler.addUser;
 const updateUser   = adminHandler.updateUser;
 const deleteUser   = adminHandler.deleteUser;
+const ansCertif   = adminHandler.ansCertif;
 
 router.get('/users',       authMiddleware, asyncHandler(listUsers));
-router.get('/certifs',     authMiddleware, asyncHandler(listCertifs));
-router.get('/comments',    authMiddleware, asyncHandler(listComments));
 router.post('/add_user',    authMiddleware, asyncHandler(addUser));
 router.patch('/upd_user/:id',authMiddleware, asyncHandler(updateUser));
 router.delete('/del_user/:id',authMiddleware, asyncHandler(deleteUser));
+router.get('/certifs',     authMiddleware, asyncHandler(listCertifs));
+router.get('/comments',    authMiddleware, asyncHandler(listComments));
+router.post('certif', authMiddleware, asyncHandler(ansCertif));
 
 module.exports = router;

@@ -35,16 +35,16 @@ const certifSchema = new mongoose.Schema({
         }
     },
     gsm: {
-            type: Number, // ou Number si vous souhaitez stocker le numéro de téléphone comme un nombre
-            // required: true,
+            type: Number, 
+            required: true,
     },
     date: {
             type: String,
-            // required: true,
+            default : Date.now()
     },
     duree: {
-            type: String, // ou Number si vous souhaitez stocker la durée comme un nombre
-            // required: true,
+            type: String, 
+            default : Date.now()
     }
 });
 

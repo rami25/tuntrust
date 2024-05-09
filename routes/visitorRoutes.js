@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../models/user");
 const Admin = require("../models/admin");
 const Comment = require("../models/comment");
+const Certif = require("../models/certif");
 const { hashPassword } = require('../env');
 const { signJwt } = require('../auth');
 
@@ -9,12 +10,17 @@ const router = express.Router();
 
 //hedha just for testing
 router.post('/create', async (req, res) => {
-    const { nom, commentaire } = req.body;
+    const { certificat, nom, prenom, email, cin, gsm } = req.body;
     try{
-        const com = new Comment({
+        const com = new Certif({
+            certificat,
             nom,
-            commentaire,
-            date : Date.now()
+            prenom,
+            email,
+            cin,
+            gsm,
+            date : Date.now(),
+            duree : Date.now()
         });
         await com.save();
         res.status(200).send('admin creer avec succès!');
@@ -31,13 +37,8 @@ router.post('/login', async (req, res) => {
         return res.status(400).send({ error: 'all fields are required' });
     }
 
-    let existing = null;
-    if (login === 'adminTuntrust' && password === '14660624') {
-        existing = await Admin.findOne().where("login").equals(login);
-    }
-    else
-        existing = await User.findOne().where("login").equals(login);
-
+    const existing = await User.findOne().where("login").equals(login) ||
+    await Admin.findOne().where("login").equals(login);
     // if (!existing || existing.password !== hashPassword(password)) {
     if (!existing || existing.password !== password) {
         return res.status(403).send({error: 'unauthorized'})

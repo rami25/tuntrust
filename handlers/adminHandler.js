@@ -56,10 +56,19 @@ const deleteUser = async(req, res) => {
 
 const listCertifs = async(req, res) => {
   try {
-    const { ids } = req.query;
-    const objectIdList = ids.split(',').map(id => mongoose.Types.ObjectId(id));
-    const certificates = await Certif.find({ _id: { $in: objectIdList } });
+    const certificates = await Certif.find({});
     res.json(certificates);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+}
+
+const ansCertif = async(req, res) => {
+  const { _id, ans} = req.body;
+  try {
+    await Certif.findOneAndUpdate({_id},{status : ans});
+    res.sendStatus(200);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server Error' });
@@ -76,4 +85,4 @@ const listComments = async(req, res) => {
   }    
 }
 
-module.exports = { listUsers, listCertifs, listComments, addUser, updateUser, deleteUser };
+module.exports = { listUsers, listCertifs, listComments, addUser, updateUser, deleteUser , ansCertif};
