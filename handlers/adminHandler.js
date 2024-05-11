@@ -1,6 +1,7 @@
 const User   = require('../models/user');
 const Certif = require('../models/certif');
 const Comment = require("../models/comment");
+const { ObjectId } = require('mongoose')
 
 const listUsers = async(req, res) => {
     try {
@@ -56,7 +57,17 @@ const deleteUser = async(req, res) => {
 
 const listCertifs = async(req, res) => {
   try {
-    const certificates = await Certif.find({});
+    const certificates = await Certif.find({ status : 'en attente'});
+    res.json(certificates);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+}
+
+const listdCertifs = async(req, res) => {
+  try {
+    const certificates = await Certif.find({ status : { $in : ['accepted', 'rejected'] }});
     res.json(certificates);
   } catch (err) {
     console.error(err);
@@ -67,7 +78,7 @@ const listCertifs = async(req, res) => {
 const ansCertif = async(req, res) => {
   const { _id, ans} = req.body;
   try {
-    await Certif.findOneAndUpdate({_id},{status : ans});
+    await Certif.findByIdAndUpdate(_id,{status : ans, answerDate : Date.now()}, {new : true});
     res.sendStatus(200);
   } catch (err) {
     console.error(err);
@@ -85,4 +96,4 @@ const listComments = async(req, res) => {
   }    
 }
 
-module.exports = { listUsers, listCertifs, listComments, addUser, updateUser, deleteUser , ansCertif};
+module.exports = { listUsers, listCertifs, listdCertifs, listComments, addUser, updateUser, deleteUser , ansCertif};

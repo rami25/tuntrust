@@ -5,6 +5,14 @@ const certifSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    userId : {
+        type: mongoose.Types.ObjectId,
+        // required: true,
+    },
+    status : {
+        type : String,
+        default : 'en attente'
+    },
     nom: {
         type: String,
         required: true,
@@ -45,6 +53,10 @@ const certifSchema = new mongoose.Schema({
     duree: {
             type: String, 
             default : Date.now()
+    },
+    answerDate : {
+        type : String,
+        default : Date.now()
     }
 });
 
