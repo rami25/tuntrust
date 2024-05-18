@@ -9,22 +9,50 @@ const { signJwt } = require('../auth');
 
 const router = express.Router();
 
-//hedha just for testing
-router.post('/create', async (req, res) => {
+const realTime = (timeString) => {
+  const timeMapping = {
+    '9h': '09:00:00',
+    '10h': '10:00:00',
+    '11h': '11:00:00',
+    '15h': '15:00:00',
+    '16h': '16:00:00'
+  };
+
+  return timeMapping[timeString] || '00:00:00';
+}
+
+const combineDateTime = (dateString, timeString) => {
+  const date = new Date(dateString);
+  const [hours, minutes, seconds] = timeString.split(':').map(Number);
+  date.setHours(hours);
+  date.setMinutes(minutes);
+  date.setSeconds(seconds);
+  return date;
+}
+
+router.post('/add-reserv', async (req, res) => {
     const { userId, date, time } = req.body;
     try{
+        const Time = realTime(time);
+        const tDate = combineDateTime(date, Time);
+        const reserv = await Reservation.findOne().where("date").equals(tDate);
+        console.log('targetDate : ' + tDate);
+        if(reserv){
+            console.log('reserv.date' + reserv.date);
+            return res.status(200).send({msg : 'Date is already reserved'});
+        }
         const user = await User.findById(userId);
         const com = new Reservation({
             nom : user.nom,
             email : user.email,
-            date,
+            date : tDate,
             time
         });
         await com.save();
-        res.status(200).send('admin creer avec succès!');
+        res.status(200).send('reservation has been created successfully!');
     } catch (err) {
       console.log(err);
-      res.status(500).send('Une erreur est survenue lors de la soumission de la demande.');
+      res.status(500).send('Une erreur est survenue lors de la soumission de la reservation.');
     }
 });
 
