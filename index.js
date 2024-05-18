@@ -31,5 +31,5 @@ app.use('/user',   require('./routes/userRoutes'));
 app.use('/comment',require('./routes/commentRoutes'));
 app.use('/logout', require('./routes/logoutRoutes'));
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => { console.log("Serveur en marche"); }); 

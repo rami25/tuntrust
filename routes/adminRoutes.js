@@ -12,6 +12,7 @@ const addUser      = adminHandler.addUser;
 const updateUser   = adminHandler.updateUser;
 const deleteUser   = adminHandler.deleteUser;
 const ansCertif   = adminHandler.ansCertif;
+const listReservs   = adminHandler.listReservs;
 
 router.get('/users',       authMiddleware, asyncHandler(listUsers));
 router.post('/add_user',    authMiddleware, asyncHandler(addUser));
@@ -21,5 +22,6 @@ router.get('/certifs',     authMiddleware, asyncHandler(listCertifs));
 router.get('/done-certifs',     authMiddleware, asyncHandler(listdCertifs));
 router.get('/comments',    authMiddleware, asyncHandler(listComments));
 router.post('/certif', authMiddleware, asyncHandler(ansCertif));
+router.get('/reservs', authMiddleware, asyncHandler(listReservs));
 
 module.exports = router;

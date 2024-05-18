@@ -1,7 +1,7 @@
 const User   = require('../models/user');
 const Certif = require('../models/certif');
 const Comment = require("../models/comment");
-const { ObjectId } = require('mongoose')
+const Reservation = require("../models/reservation");
 
 const listUsers = async(req, res) => {
     try {
@@ -96,4 +96,23 @@ const listComments = async(req, res) => {
   }    
 }
 
-module.exports = { listUsers, listCertifs, listdCertifs, listComments, addUser, updateUser, deleteUser , ansCertif};
+const listReservs = async(req, res) => {
+  try {
+    const reservations = await Reservation.find({});
+    res.json(reservations);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }    
+}
+
+module.exports = { listUsers,
+                   listCertifs,
+                   listdCertifs,
+                   listComments,
+                   addUser,
+                   updateUser,
+                   deleteUser,
+                   ansCertif,
+                   listReservs
+                 };

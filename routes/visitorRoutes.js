@@ -3,6 +3,7 @@ const User = require("../models/user");
 const Admin = require("../models/admin");
 const Comment = require("../models/comment");
 const Certif = require("../models/certif");
+const Reservation = require("../models/reservation");
 const { hashPassword } = require('../env');
 const { signJwt } = require('../auth');
 
@@ -10,17 +11,14 @@ const router = express.Router();
 
 //hedha just for testing
 router.post('/create', async (req, res) => {
-    const { certificat, nom, prenom, email, cin, gsm } = req.body;
+    const { userId, date, time } = req.body;
     try{
-        const com = new Certif({
-            certificat,
-            nom,
-            prenom,
-            email,
-            cin,
-            gsm,
-            date : Date.now(),
-            duree : Date.now()
+        const user = await User.findById(userId);
+        const com = new Reservation({
+            nom : user.nom,
+            email : user.email,
+            date,
+            time
         });
         await com.save();
         res.status(200).send('admin creer avec succès!');
